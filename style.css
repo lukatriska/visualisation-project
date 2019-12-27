@@ -1,0 +1,20 @@
+body {
+  background-color: #F3F7F7;
+  font-family: "Ubuntu Mono", serif;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.main-container {
+  width: 1000px;
+  height: 800px;
+
+}
+
+canvas {
+  /*width: 600px !important;*/
+  /*height: 600px !important;*/
+
+}
