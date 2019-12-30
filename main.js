@@ -1,5 +1,4 @@
 let fullName = "Border_Crossing_Entry_Data.csv";
-let shortName = "short.csv";
 
 const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -218,10 +217,7 @@ d3.csv(fullName, data => {
       labels: Object.keys(allBorderCounts).map((key, index) => key),
       datasets: [{
         label: 'Total inbound persons, since 1996',
-        backgroundColor: [
-          "#d21243",
-          "#d2ae79"
-        ],
+        backgroundColor: ['rgba(255,73,65,0.64)', 'rgba(255,206,86,0.42)'],
         data: Object.keys(allBorderCounts).map((key, index) => allBorderCounts[key]),
       }]
     },
@@ -254,12 +250,12 @@ d3.csv(fullName, data => {
       datasets: [
         {
           label: 'US-Mexico Border',
-          backgroundColor: "#d21243",
+          backgroundColor: 'rgba(255,206,86,0.42)',
           data: Object.keys(borderCountsForEachYearBorder["US-Mexico Border"]).map((key, index) => borderCountsForEachYearBorder["US-Mexico Border"][key])
         },
         {
           label: 'US-Canada Border',
-          backgroundColor: "#d2ae79",
+          backgroundColor: 'rgba(255,73,65,0.64)',
           data: Object.keys(borderCountsForEachYearBorder["US-Canada Border"]).map((key, index) => borderCountsForEachYearBorder["US-Canada Border"][key]),
         },
       ]
@@ -293,23 +289,23 @@ d3.csv(fullName, data => {
       labels: years,
       datasets: [
         {
+          backgroundColor: 'rgba(255,206,86,0.42)',
           label: personMeasures[0],
-          backgroundColor: "#d21243",
           data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) => borderCountsForEachYearMeasure[personMeasures[0]][key])
         },
         {
           label: personMeasures[1],
-          backgroundColor: "#d2ae79",
+          backgroundColor: 'rgba(255,73,65,0.64)',
           data: Object.keys(borderCountsForEachYearMeasure[personMeasures[1]]).map((key, index) => borderCountsForEachYearMeasure[personMeasures[1]][key]),
         },
         {
           label: personMeasures[2],
-          backgroundColor: "#4470d2",
+          backgroundColor: 'rgba(255,99,231,0.55)',
           data: Object.keys(borderCountsForEachYearMeasure[personMeasures[2]]).map((key, index) => borderCountsForEachYearMeasure[personMeasures[2]][key]),
         },
         {
           label: personMeasures[3],
-          backgroundColor: "#6ad27b",
+          backgroundColor: 'rgba(69,81,255,0.56)',
           data: Object.keys(borderCountsForEachYearMeasure[personMeasures[3]]).map((key, index) => borderCountsForEachYearMeasure[personMeasures[3]][key]),
         },
       ]
@@ -323,6 +319,118 @@ d3.csv(fullName, data => {
       title: {
         display: true,
         text: 'Total inbound persons, since 1996, ordered by way of crossing the border and year'
+      },
+      scales: {
+        xAxes: [
+          {stacked: true}
+        ],
+        yAxes: [
+          {stacked: true}
+        ]
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+
+  let peopleVehicleRatioChart = new Chart(document.getElementById('myChart4'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        {
+          label: "Inbound personal vehicles",
+          backgroundColor: 'rgba(255,206,86,0.42)',
+          data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) => parseInt(borderCountsForEachYearMeasure[personMeasures[0]][key] / 1.5))
+        }
+      ]
+    },
+    options: {
+      tooltips: {
+        callbacks: {
+          label: tooltipItem => `# of personal inbound vehicles: ${numberWithCommas(tooltipItem.value)}`
+        }
+      },
+      scales: {
+        xAxes: [
+          {stacked: true}
+        ],
+        yAxes: [
+          {stacked: true}
+        ]
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+
+  let personalVehicleVsBusLitresOfFuelBurnedChart = new Chart(document.getElementById('myChart5'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        {
+          label: "Litres of fuel that would have been consumed by 20 people buses",
+          backgroundColor: 'rgba(255,206,86,0.42)',
+          data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) =>
+            parseInt(borderCountsForEachYearMeasure[personMeasures[0]][key] / 20 * 13 * 1.5))
+        },
+        {
+          label: "Litres of fuel consumed by personal vehicles",
+          backgroundColor: 'rgba(255,110,78,0.6)',
+          data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) =>
+            parseInt(borderCountsForEachYearMeasure[personMeasures[0]][key] * 10 * 1.5))
+        }
+      ]
+    },
+    options: {
+      tooltips: {
+        callbacks: {
+          label: tooltipItem => `# of litres burned: ${numberWithCommas(tooltipItem.value)}`
+        }
+      },
+      title: {
+        display: true,
+        text: 'Litres of fuel consumed by two different ways of transporting people'
+      },
+      scales: {
+        xAxes: [
+          {stacked: true}
+        ],
+        yAxes: [
+          {stacked: true}
+        ]
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+  });
+
+  let amountOfCO2SavedByUsingBusesOnlyChart = new Chart(document.getElementById('myChart6'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        {
+          label: "Amount of CO2 that would not have been released, if all personal vehicle passengers travelled by buses, in kilotonnes",
+          backgroundColor: 'rgba(255,206,86,0.42)',
+          data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) =>
+            parseInt(((borderCountsForEachYearMeasure[personMeasures[0]][key] * 10 * 1.5) -
+              (borderCountsForEachYearMeasure[personMeasures[0]][key] / 20 * 13 * 1.5)) * 0.0000023))
+        },
+        // {
+        //   label: "Litres of fuel consumed by personal vehicles",
+        //   backgroundColor: "#d21243",
+        //   data: Object.keys(borderCountsForEachYearMeasure[personMeasures[0]]).map((key, index) =>
+        //     parseInt(borderCountsForEachYearMeasure[personMeasures[0]][key] * 10))
+        // }
+      ]
+    },
+    options: {
+      tooltips: {
+        callbacks: {
+          label: tooltipItem => `CO2 that would not have been released, if all personal vehicle passengers travelled by buses, in kilotonnes: ${numberWithCommas(tooltipItem.value)}`
+        }
       },
       scales: {
         xAxes: [

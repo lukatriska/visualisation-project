@@ -8,13 +8,21 @@ body {
 }
 
 .main-container {
-  width: 800px;
+  width: auto;
   height: 600px;
+}
 
+.chart {
+  margin: auto;
+}
+
+.heading-text {
+  text-align: center;
+  margin: 20px 150px 20px 150px;
 }
 
 canvas {
-  /*width: 600px !important;*/
+  /*width: 1200px !important;*/
   /*height: 600px !important;*/
 
 }
